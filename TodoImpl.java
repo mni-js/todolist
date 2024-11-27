@@ -20,12 +20,16 @@ public class TodoImpl implements Todo {
 
     @Override
     public void modify(String title, String newTitle) {
-
+        if (todos.containsKey(title)) {
+            todos.put(newTitle, todos.remove(title));
+        }
     }
 
     @Override
     public void modify(String title, LocalDate newDate) {
-
+        if (todos.containsKey(title)) {
+            todos.replace(title, todos.get(title), newDate);
+        }
     }
 
     @Override
