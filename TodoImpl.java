@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +41,11 @@ public class TodoImpl implements Todo {
     }
 
     @Override
-    public void save() {
-
+    public void save() throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(
+                new FileWriter("todos.txt"));
+        bufferedWriter.write(todos.toString());
+        bufferedWriter.close();
     }
 
     @Override
@@ -49,8 +55,6 @@ public class TodoImpl implements Todo {
 
     @Override
     public String toString() {
-        return "TodoImpl{" +
-                "todos=" + todos +
-                '}';
+        return todos + "";
     }
 }

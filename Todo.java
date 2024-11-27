@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public interface Todo {
@@ -6,6 +8,6 @@ public interface Todo {
     void modify(String title, String newTitle);
     void modify(String title, LocalDate newDate);
     void delete(String title);
-    void save();
+    void save() throws IOException;
     void load();
 }
