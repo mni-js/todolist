@@ -1,9 +1,13 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class TodoImpl implements Todo {
     Map<String, LocalDate> todos = new HashMap<>();
@@ -44,13 +48,25 @@ public class TodoImpl implements Todo {
     public void save() throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(
                 new FileWriter("todos.txt"));
-        bufferedWriter.write(todos.toString());
+        for (String s : todos.keySet()) {
+            String savedLine = s + "=" + todos.get(s);
+            bufferedWriter.write(savedLine);
+            bufferedWriter.write("\n");
+        }
         bufferedWriter.close();
     }
 
     @Override
-    public void load() {
-
+    public void load() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("todos.txt"));
+        String br;
+        while ((br = bufferedReader.readLine()) != null) {
+            String[] keyValuePair = br.split("=");
+            String key = keyValuePair[0];
+            String stringValue = keyValuePair[1];
+            LocalDate value = LocalDate.parse(stringValue, DateTimeFormatter.ISO_LOCAL_DATE);
+            todos.put(key, value);
+        }
     }
 
     @Override

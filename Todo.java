@@ -9,5 +9,5 @@ public interface Todo {
     void modify(String title, LocalDate newDate);
     void delete(String title);
     void save() throws IOException;
-    void load();
+    void load() throws IOException;
 }
