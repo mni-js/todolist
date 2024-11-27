@@ -5,6 +5,7 @@ public interface Todo {
     void printAll();
     void modify(String title, String newTitle);
     void modify(String title, LocalDate newDate);
+    void delete(String title);
     void save();
     void load();
 }

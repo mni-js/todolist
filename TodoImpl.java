@@ -33,6 +33,11 @@ public class TodoImpl implements Todo {
     }
 
     @Override
+    public void delete(String title) {
+        todos.remove(title);
+    }
+
+    @Override
     public void save() {
 
     }
