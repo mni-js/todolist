@@ -26,50 +26,58 @@ public class TodoImpl implements Todo {
 
     @Override
     public void printAll() {
-//        System.out.println(todos.keySet());
+        System.out.println(todos.keySet());
     }
 
     @Override
-    public void modify(String title, String newTitle) {
-//        if (todos.containsKey(title)) {
-//            todos.put(newTitle, todos.remove(title));
-//        }
+    public void modifyTitle(String title, String newTitle) {
+        if (!todos.containsKey(title)) {
+            throw new IllegalArgumentException("없는 제목입니다. 다시 입력해주세요.");
+        }
+        todos.put(newTitle, todos.remove(title));
     }
 
     @Override
-    public void modify(String title, LocalDate newDate) {
-//        if (todos.containsKey(title)) {
-//            todos.replace(title, todos.get(title), newDate);
-//        }
+    public void modifyDate(String title, String newDate) {
+        if (!todos.containsKey(title)) {
+            throw new IllegalArgumentException("없는 제목입니다. 다시 입력해주세요.");
+        }
+        todos.replace(title, todos.get(title), new TodoItem(title, newDate));
     }
 
     @Override
     public void delete(String title) {
-//        todos.remove(title);
+        if (!todos.containsKey(title)) {
+            throw new IllegalArgumentException("없는 제목입니다. 다시 입력해주세요.");
+        }
+        todos.remove(title);
     }
 
     @Override
     public void save() throws IOException {
-//        BufferedWriter bufferedWriter = new BufferedWriter(
-//                new FileWriter("todos.txt"));
-//        for (String s : todos.keySet()) {
-//            String savedLine = s + "=" + todos.get(s);
-//            bufferedWriter.write(savedLine);
-//            bufferedWriter.write("\n");
-//        }
-//        bufferedWriter.close();
+        BufferedWriter bufferedWriter = new BufferedWriter(
+                new FileWriter("todos.txt"));
+        for (String s : todos.keySet()) {
+            String savedLine = s + "=" + todos.get(s);
+            bufferedWriter.write(savedLine);
+            bufferedWriter.write("\n");
+        }
+        bufferedWriter.close();
     }
 
     @Override
     public void load() throws IOException {
-//        BufferedReader bufferedReader = new BufferedReader(new FileReader("todos.txt"));
-//        String br;
-//        while ((br = bufferedReader.readLine()) != null) {
-//            String[] keyValuePair = br.split("=");
-//            String key = keyValuePair[0];
-//            String stringValue = keyValuePair[1];
-//            LocalDate value = LocalDate.parse(stringValue, DateTimeFormatter.ISO_LOCAL_DATE);
-//            todos.put(key, value);
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("todos.txt"));
+        String br;
+        while ((br = bufferedReader.readLine()) != null) {
+            String[] keyValuePair = br.split("=");
+            String key = keyValuePair[0];
+            String title = keyValuePair[2].split(",")[0];
+            String date = keyValuePair[3].split("}")[0];
+            TodoItem item = new TodoItem(title, date);
+
+            todos.put(key, item);
+        }
     }
 
     @Override
@@ -79,4 +87,3 @@ public class TodoImpl implements Todo {
                 '}';
     }
 }
-
