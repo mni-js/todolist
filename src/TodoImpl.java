@@ -29,23 +29,28 @@ public class TodoImpl implements Todo {
 
     @Override
     public void displayTodos() {
-        System.out.println(todos.keySet());
+        System.out.println("TodoImpl{" +
+                "todos=" + todos +
+                '}');
     }
 
     @Override
-    public void modifyTitle(String title, String newTitle) {
+    public void modify(String title, String property, String newValue) {
         if (!todos.containsKey(title)) {
-            throw new IllegalArgumentException("없는 제목입니다. 다시 입력해주세요.");
+            throw new IllegalArgumentException("없는 제목입니다.");
         }
-        todos.put(newTitle, todos.remove(title));
-    }
+        TodoItem item = todos.get(title);
 
-    @Override
-    public void modifyDate(String title, String newDate) {
-        if (!todos.containsKey(title)) {
-            throw new IllegalArgumentException("없는 제목입니다. 다시 입력해주세요.");
+        switch (property) {
+            case "title":
+                item.setTitle(newValue);
+                break;
+            case "deadLine":
+                item.setDeadLine(newValue);
+                break;
+            default:
+                throw new IllegalArgumentException("알 수 없는 속성입니다.");
         }
-        todos.replace(title, todos.get(title), new TodoItem(title, newDate));
     }
 
     @Override
@@ -68,12 +73,5 @@ public class TodoImpl implements Todo {
         objectMapper.registerModule(new JavaTimeModule());
 
         todos = objectMapper.readValue(new File("todos.json"), objectMapper.getTypeFactory().constructMapType(Map.class, String.class, TodoItem.class));
-    }
-
-    @Override
-    public String toString() {
-        return "TodoImpl{" +
-                "todos=" + todos +
-                '}';
     }
 }

@@ -11,8 +11,6 @@ public class TodoItem {
     private LocalDate deadLine;
 
     public TodoItem(String title, String deadLineStr) {
-        DateValidater.validate(deadLineStr);
-
         this.title = title;
         this.deadLine = LocalDate.parse(deadLineStr, DateTimeFormatter.ISO_LOCAL_DATE);
     }
@@ -24,8 +22,13 @@ public class TodoItem {
         return title;
     }
 
-    public LocalDate getDeadLine() {
-        return deadLine;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDeadLine(String deadLine) {
+        DateValidater.validate(deadLine);
+        this.deadLine = LocalDate.parse(deadLine, DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     @Override
