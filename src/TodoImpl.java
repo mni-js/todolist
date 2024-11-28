@@ -25,7 +25,7 @@ public class TodoImpl implements Todo {
     }
 
     @Override
-    public void printAll() {
+    public void displayTodos() {
         System.out.println(todos.keySet());
     }
 
