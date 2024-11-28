@@ -1,19 +1,22 @@
 package src;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TodoImpl implements Todo {
-    Map<String, TodoItem> todos = new HashMap<>();
+    private Map<String, TodoItem> todos;
+
+    public TodoImpl(Map<String, TodoItem> todos) {
+        this.todos = todos;
+    }
+
+    public TodoImpl() {
+        todos = new HashMap<>();
+    }
 
     @Override
     public void add(TodoItem item) {
@@ -55,29 +58,16 @@ public class TodoImpl implements Todo {
 
     @Override
     public void save() throws IOException {
-        BufferedWriter bufferedWriter = new BufferedWriter(
-                new FileWriter("todos.txt"));
-        for (String s : todos.keySet()) {
-            String savedLine = s + "=" + todos.get(s);
-            bufferedWriter.write(savedLine);
-            bufferedWriter.write("\n");
-        }
-        bufferedWriter.close();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.writeValue(new File("todos.json"), todos);
     }
 
-    @Override
     public void load() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("todos.txt"));
-        String br;
-        while ((br = bufferedReader.readLine()) != null) {
-            String[] keyValuePair = br.split("=");
-            String key = keyValuePair[0];
-            String title = keyValuePair[2].split(",")[0];
-            String date = keyValuePair[3].split("}")[0];
-            TodoItem item = new TodoItem(title, date);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
 
-            todos.put(key, item);
-        }
+        todos = objectMapper.readValue(new File("todos.json"), objectMapper.getTypeFactory().constructMapType(Map.class, String.class, TodoItem.class));
     }
 
     @Override

@@ -1,8 +1,7 @@
 package src;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -14,7 +13,7 @@ public class Main {
         todo.add(item2);
         todo.add(item3);
 
-        todo.printAll();
+        todo.displayTodos();
 
         todo.modifyTitle("안녕1", "저녁먹기");
         System.out.println(todo);
@@ -27,7 +26,8 @@ public class Main {
 
         todo.save();
 
-        todo.load();
-        System.out.println(todo);
+        Todo newTodos = new TodoImpl();
+        newTodos.load();
+        System.out.println("newTodos = " + newTodos);
     }
 }

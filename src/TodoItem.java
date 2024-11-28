@@ -1,11 +1,13 @@
 package src;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class TodoItem {
     private String title;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadLine;
 
     public TodoItem(String title, String deadLineStr) {
@@ -13,6 +15,9 @@ public class TodoItem {
 
         this.title = title;
         this.deadLine = LocalDate.parse(deadLineStr, DateTimeFormatter.ISO_LOCAL_DATE);
+    }
+
+    public TodoItem() {
     }
 
     public String getTitle() {
