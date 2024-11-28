@@ -1,9 +1,10 @@
-import java.io.FileNotFoundException;
+package src;
+
 import java.io.IOException;
 import java.time.LocalDate;
 
 public interface Todo {
-    void add(String title, LocalDate date);
+    void add(TodoItem item);
     void printAll();
     void modify(String title, String newTitle);
     void modify(String title, LocalDate newDate);
